@@ -6,5 +6,6 @@ source "https://rubygems.org"
 gemspec
 
 gem "rake", "~> 13.0"
-
 gem "rspec", "~> 3.0"
+gem 'irb', '~> 1.3', '>= 1.3.5', require: false
+gem 'dotenv', '~> 2.7', '>= 2.7.6'

@@ -1,0 +1,160 @@
+#+TITLE: Paycargo
+#+AUTHOR: Jose Perez
+#+EMAIL: jose.perez@vertilux.com
+#+EXPORT_FILE_NAME: ./docs/index.html
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="style.css">
+#+OPTIONS: num:nil
+
+Paycargo is a ruby gem client library to talk with Paycargo API. Paycargo wraps the Paycargos's REST API and follows Ruby convention.
+
+** Quik start
+
+Install via Rubygems
+
+#+begin_src ruby
+gem install paycargo
+#+end_src
+
+Or add to your application's Gemfile:
+#+begin_src ruby
+gem 'paycargo'
+#+end_src
+
+And then execute:
+#+begin_src bash
+bundle install
+#+end_src
+
+Access the library in Ruby:
+#+begin_src ruby
+require 'paycargo'
+#+end_src
+
+*** Making requests
+Initialize client to make requets:
+
+#+begin_src ruby
+client = Paycargo::Client.new(token: "JWT TOKEN")
+client.transactions.list()
+#+end_src
+
+*** Consuming resources
+Most methods return a =Resource= object which provides dot notation and [] access for fields returned in the API response.
+
+**** Transactions
+
+Get all Transactions for a client.
+#+begin_src ruby
+client.transactions.list()
+#+end_src
+
+Get a transaction by id
+#+begin_src ruby
+client.transactions.retreive(473943)
+#+end_src
+
+Get transaction by number
+#+begin_src ruby
+client.transactions.by_number(number: 9292323, vendorID: 279366)
+#+end_src
+
+Get transactions history
+#+begin_src ruby
+client.transactions.history(476296)
+#+end_src
+
+Create Transaction
+#+begin_src ruby
+client.transactions.create(
+  vendorId: 279546,
+  type: 'Other',
+  subcategory: 'I-432188',
+  number: '929-83294551',
+  departureDate: '2018-04-01',
+  arrivalDate: '2018-04-24',
+  total: 100,
+  direction: 'Outbound',
+  paymentDueDate: '2018-04-24',
+  hasArrived: 'Y',
+  shipperRefNumber: 'tdfgfdgfd'
+)
+#+end_src
+
+Approve a Transaction
+#+begin_src ruby
+client.transactions.apporve(489479, paymentType: 'OVERNIGHT')
+#+end_src
+
+Puting a transaction to =proof=
+#+begin_src ruby
+client.transactions.proof(500744)
+#+end_src
+
+Get transactions fees
+#+begin_src ruby
+client.transactions.fees(
+  paymentType: 'OVERNIGHT',
+  transactionId: 123456,
+  numberOfTransactions: 2,
+  payerId: 123456,
+  vendorId: 123456,
+  total: 70
+)
+#+end_src
+
++ =paymentType=: payment type for transaction: OVERNIGHT, PREPAID, CREDITCARD, PAYCARGO_CREDIT.
++ =transactionId=: transaction id if exists.
++ =numberOfTransactions=: number of transaction. Used to define if batch flat fee can be applied.
++ =payerID=: payer ID
++ =vendorID=: vendor ID
++ =total=: total amount used to calculate fees for PAYCARGO_CREDIT and CREDITCARD payment type.
+
+**** Funds
+
+Get Funds Availability
+#+begin_src ruby
+client.payer.funds(281783)
+#+end_src
+
+This endpoint retrieves the following data, per payer, per payment method:
++ get funds availability
++ get funds limit
+
+**** Reports
+
+Get Payer ACH Report
+#+begin_src ruby
+client.reports.payer(
+    startDate: '10/01/2020',
+    endDate: '11/01/2020',
+    client_id: 284347,
+    report_action_name: 'getACHReconciliation',
+    type: 'SHIPPER',
+    accountName: 'all'
+)
+#+end_src
+
++ =fleet_id=: Account fleet id ( payerId)
++ =startDate=: Start Date in MM/DD/YYYY format
++ =endDate=: End Date in MM/DD/YYYY format
++ =client_id=: Account client id
++ =report_action_name=: PayCargo report type name, for ACH report : getACHReconciliation
++ =type=: Account type : SHIPPER or CARRIER
++ =accountName=: Account name of branch if any. Apply "all" to get data from branches for HQ
++ =fleetLimit=: fleet_id
++ =providerLimit=: provier_id
+
+** Development
+
+After checking out the repo, run =bin/setup= to install dependencies. Then, run =rake spec= to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run =bundle exec rake install=. To release a new version, update the version number in =version.rb= and then run =bundle exec rake release= which will create a git tag for the version, push git commits and the created tag, and push the =gem= file to [[https://rubygems.org][rubygems.org]].
+
+** Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/lepepe/paycargo.
+
+** License
+
+The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

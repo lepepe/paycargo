@@ -3,6 +3,8 @@
 
 require "bundler/setup"
 require "paycargo"
+require 'dotenv/load'
+Dotenv.load
 
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
@@ -10,6 +12,9 @@ require "paycargo"
 # (If you use this, don't forget to add pry to your Gemfile!)
 # require "pry"
 # Pry.start
+
+#client = Paycargo::Client.new(token: ENV['token'])
+client = Paycargo::Client.new(token: ENV["JWT_TOKEN"])
 
 require "irb"
 IRB.start(__FILE__)
