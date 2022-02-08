@@ -12,8 +12,12 @@ module Paycargo
   autoload :TransactionsResource, "paycargo/resources/transactions"
   autoload :PayerResource, "paycargo/resources/payer"
   autoload :ReportsResource, "paycargo/resources/reports"
+  autoload :UsersResource, "paycargo/resources/users"
+  autoload :VendorsResource, "paycargo/resources/vendors"
 
   autoload :Transaction, "paycargo/objects/transaction.rb"
   autoload :Payer, "paycargo/objects/payer.rb"
   autoload :Report, "paycargo/objects/report.rb"
+  autoload :User, "paycargo/objects/user.rb"
+  autoload :Vendor, "paycargo/objects/vendor.rb"
 end

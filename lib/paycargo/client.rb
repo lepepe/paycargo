@@ -24,6 +24,14 @@ module Paycargo
       ReportsResource.new(self)
     end
 
+    def users
+      UsersResource.new(self)
+    end
+
+    def vendors
+      VendorsResource.new(self)
+    end
+
     def connection
       @connection ||= Faraday.new do |con|
         con.url_prefix = BASE_URL

@@ -42,6 +42,14 @@ module Paycargo
       Transaction.new put_request("transaction/pay/#{id}").body
     end
 
+    #Batch Approves a list of transactions, for the same Vendor. Available payment methods: OVERNIGHT, PREPAID.
+    #BODY
+    #- batchPaymentType: OVERNIGHT
+    #- transactionIds: 515168,515169
+    def batch_approve(**attributes)
+      Transaction.new put_request("transactions/batch/pay", body: attributes).body
+    end
+
     #Proof Transaction
     #PUTing a transaction to 'proof'
     def proof(id)
@@ -63,8 +71,20 @@ module Paycargo
 
     #Get Fees for transaction. paymentType and transactionId OR paymentType
     #and vendorId and payerId are required to getFees
+    #PARAMS
+    #- paymentType: 'OVERNIGHT',
+    #- transactionId: 123456,
+    #- numberOfTransactions: 2,
+    #- payerId: 123456,
+    #- vendorId: 123456,
+    #- total: 70
     def fees(**params)
-      get_request("transaction/fees", params: params).body
+      Transaction.new get_request("transaction/fees", params: params).body
+    end
+
+    # Void transaction
+    def void(id, **params)
+      Transaction.new put_request("transaction/void/#{id}", params: params).body
     end
 
   end

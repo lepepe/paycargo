@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2022-02-07 Mon 16:17 -->
+<!-- 2022-02-07 Mon 22:07 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Paycargo</title>
@@ -208,21 +208,23 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#orgaffc9ae">Quik start</a>
+<li><a href="#orgcec2f75">Quik start</a>
 <ul>
-<li><a href="#org30d08d4">Making requests</a></li>
-<li><a href="#org10e0038">Consuming resources</a>
+<li><a href="#org2cac2b8">Making requests</a></li>
+<li><a href="#orgb271292">Consuming resources</a>
 <ul>
-<li><a href="#org4159966">Transactions</a></li>
-<li><a href="#org3effeb7">Funds</a></li>
-<li><a href="#org4939efc">Reports</a></li>
+<li><a href="#org80bec33">User</a></li>
+<li><a href="#orgafacab8">Transactions</a></li>
+<li><a href="#org9c1816c">Payer</a></li>
+<li><a href="#org74f0b5b">Vendor</a></li>
+<li><a href="#orge6c7c0a">Reports</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#org43e6090">Development</a></li>
-<li><a href="#orgb5b16b4">Contributing</a></li>
-<li><a href="#org624bcb1">License</a></li>
+<li><a href="#orgbbb0960">Development</a></li>
+<li><a href="#org7a33bd2">Contributing</a></li>
+<li><a href="#org04bc80a">License</a></li>
 </ul>
 </div>
 </div>
@@ -230,9 +232,13 @@
 Paycargo is a ruby gem client library to talk with Paycargo API. Paycargo wraps the Paycargos&rsquo;s REST API and follows Ruby convention.
 </p>
 
-<div id="outline-container-orgaffc9ae" class="outline-2">
-<h2 id="orgaffc9ae">Quik start</h2>
-<div class="outline-text-2" id="text-orgaffc9ae">
+<p>
+<img src="https://badge.fury.io/rb/vizion.svg" alt="vizion.svg" /> <a href="https://api.codeclimate.com/v1/badges/47845e928292f554631a/maintainability">https://api.codeclimate.com/v1/badges/47845e928292f554631a/maintainability</a>
+</p>
+
+<div id="outline-container-orgcec2f75" class="outline-2">
+<h2 id="orgcec2f75">Quik start</h2>
+<div class="outline-text-2" id="text-orgcec2f75">
 <p>
 Install via Rubygems
 </p>
@@ -267,9 +273,9 @@ Access the library in Ruby:
 </div>
 </div>
 
-<div id="outline-container-org30d08d4" class="outline-3">
-<h3 id="org30d08d4">Making requests</h3>
-<div class="outline-text-3" id="text-org30d08d4">
+<div id="outline-container-org2cac2b8" class="outline-3">
+<h3 id="org2cac2b8">Making requests</h3>
+<div class="outline-text-3" id="text-org2cac2b8">
 <p>
 Initialize client to make requets:
 </p>
@@ -282,17 +288,47 @@ client.transactions.list()
 </div>
 </div>
 
-<div id="outline-container-org10e0038" class="outline-3">
-<h3 id="org10e0038">Consuming resources</h3>
-<div class="outline-text-3" id="text-org10e0038">
+<div id="outline-container-orgb271292" class="outline-3">
+<h3 id="orgb271292">Consuming resources</h3>
+<div class="outline-text-3" id="text-orgb271292">
 <p>
 Most methods return a <code>Resource</code> object which provides dot notation and [] access for fields returned in the API response.
 </p>
 </div>
 
-<div id="outline-container-org4159966" class="outline-4">
-<h4 id="org4159966">Transactions</h4>
-<div class="outline-text-4" id="text-org4159966">
+<div id="outline-container-org80bec33" class="outline-4">
+<h4 id="org80bec33">User</h4>
+<div class="outline-text-4" id="text-org80bec33">
+<p>
+This resource allows you to send user credentials, if login success you receive a JWT token as a response for sending future requests to this API.
+<b>Token validity time is 8 hours.</b>
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">client.users.login(<span style="color: #8be9fd;">username:</span> <span style="color: #f1fa8c;">'username'</span>, <span style="color: #8be9fd;">password:</span> <span style="color: #f1fa8c;">'password'</span>)
+</pre>
+</div>
+
+<p>
+This resource allows you to retrieve user information. You need to pass a valid user id so as JWT token. Only users of your account (or your branches if you are a headquarter) are retrievable.
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">client.user.retreive(<span style="color: #8be9fd;">userId:</span> <span style="color: #bd93f9; font-weight: bold;">272360</span>)
+</pre>
+</div>
+
+<p>
+Retrieve a list of permissions for the selected user. Endpoint requires to pass a valid user id parameter.
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">client.users.permissions(<span style="color: #bd93f9; font-weight: bold;">272360</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgafacab8" class="outline-4">
+<h4 id="orgafacab8">Transactions</h4>
+<div class="outline-text-4" id="text-orgafacab8">
 <p>
 Get all Transactions for a client.
 </p>
@@ -354,6 +390,14 @@ Approve a Transaction
 </div>
 
 <p>
+Batch Approves a list of transactions, for the same Vendor. Available payment methods: OVERNIGHT, PREPAID.
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">client.transactions.batch_approve(<span style="color: #8be9fd;">batchPaymentType:</span> <span style="color: #f1fa8c;">'OVERNIGHT'</span>, <span style="color: #8be9fd;">transactionIds:</span> <span style="color: #f1fa8c;">'515168,515169'</span>)
+</pre>
+</div>
+
+<p>
 Puting a transaction to <code>proof</code>
 </p>
 <div class="org-src-container">
@@ -384,12 +428,20 @@ Get transactions fees
 <li><code>vendorID</code>: vendor ID</li>
 <li><code>total</code>: total amount used to calculate fees for PAYCARGO<sub>CREDIT</sub> and CREDITCARD payment type.</li>
 </ul>
+
+<p>
+Void Transaction
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">client.transactions.void(<span style="color: #bd93f9; font-weight: bold;">483212</span>)
+</pre>
+</div>
 </div>
 </div>
 
-<div id="outline-container-org3effeb7" class="outline-4">
-<h4 id="org3effeb7">Funds</h4>
-<div class="outline-text-4" id="text-org3effeb7">
+<div id="outline-container-org9c1816c" class="outline-4">
+<h4 id="org9c1816c">Payer</h4>
+<div class="outline-text-4" id="text-org9c1816c">
 <p>
 Get Funds Availability
 </p>
@@ -408,9 +460,30 @@ This endpoint retrieves the following data, per payer, per payment method:
 </div>
 </div>
 
-<div id="outline-container-org4939efc" class="outline-4">
-<h4 id="org4939efc">Reports</h4>
-<div class="outline-text-4" id="text-org4939efc">
+<div id="outline-container-org74f0b5b" class="outline-4">
+<h4 id="org74f0b5b">Vendor</h4>
+<div class="outline-text-4" id="text-org74f0b5b">
+<p>
+Get all vendors
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">client.vendors.list()
+</pre>
+</div>
+
+<p>
+Get vendor by id
+</p>
+<div class="org-src-container">
+<pre class="src src-ruby">client.vendors.retreive(<span style="color: #bd93f9; font-weight: bold;">279824</span>)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge6c7c0a" class="outline-4">
+<h4 id="orge6c7c0a">Reports</h4>
+<div class="outline-text-4" id="text-orge6c7c0a">
 <p>
 Get Payer ACH Report
 </p>
@@ -442,9 +515,9 @@ Get Payer ACH Report
 </div>
 </div>
 
-<div id="outline-container-org43e6090" class="outline-2">
-<h2 id="org43e6090">Development</h2>
-<div class="outline-text-2" id="text-org43e6090">
+<div id="outline-container-orgbbb0960" class="outline-2">
+<h2 id="orgbbb0960">Development</h2>
+<div class="outline-text-2" id="text-orgbbb0960">
 <p>
 After checking out the repo, run <code>bin/setup</code> to install dependencies. Then, run <code>rake spec</code> to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 </p>
@@ -455,27 +528,27 @@ To install this gem onto your local machine, run <code>bundle exec rake install<
 </div>
 </div>
 
-<div id="outline-container-orgb5b16b4" class="outline-2">
-<h2 id="orgb5b16b4">Contributing</h2>
-<div class="outline-text-2" id="text-orgb5b16b4">
+<div id="outline-container-org7a33bd2" class="outline-2">
+<h2 id="org7a33bd2">Contributing</h2>
+<div class="outline-text-2" id="text-org7a33bd2">
 <p>
 Bug reports and pull requests are welcome on GitHub at <a href="https://github.com/lepepe/paycargo">https://github.com/lepepe/paycargo</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org624bcb1" class="outline-2">
-<h2 id="org624bcb1">License</h2>
-<div class="outline-text-2" id="text-org624bcb1">
+<div id="outline-container-org04bc80a" class="outline-2">
+<h2 id="org04bc80a">License</h2>
+<div class="outline-text-2" id="text-org04bc80a">
 <p>
-The gem is available as open source under the terms of the [MIT License](<a href="https://opensource.org/licenses/MIT">https://opensource.org/licenses/MIT</a>).
+The gem is available as open source under the terms of the <a href="https://opensource.org/licenses/MIT">MIT License</a>.
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Jose Perez</p>
-<p class="date">Created: 2022-02-07 Mon 16:17</p>
+<p class="date">Created: 2022-02-07 Mon 22:07</p>
 </div>
 </body>
 </html>

@@ -8,6 +8,8 @@
 
 Paycargo is a ruby gem client library to talk with Paycargo API. Paycargo wraps the Paycargos's REST API and follows Ruby convention.
 
+[[https://badge.fury.io/rb/vizion.svg]] https://api.codeclimate.com/v1/badges/47845e928292f554631a/maintainability
+
 ** Quik start
 
 Install via Rubygems
@@ -41,6 +43,24 @@ client.transactions.list()
 
 *** Consuming resources
 Most methods return a =Resource= object which provides dot notation and [] access for fields returned in the API response.
+
+**** User
+
+This resource allows you to send user credentials, if login success you receive a JWT token as a response for sending future requests to this API.
+*Token validity time is 8 hours.*
+#+begin_src ruby
+client.users.login(username: 'username', password: 'password')
+#+end_src
+
+This resource allows you to retrieve user information. You need to pass a valid user id so as JWT token. Only users of your account (or your branches if you are a headquarter) are retrievable.
+#+begin_src ruby
+client.user.retreive(userId: 272360)
+#+end_src
+
+Retrieve a list of permissions for the selected user. Endpoint requires to pass a valid user id parameter.
+#+begin_src ruby
+client.users.permissions(272360)
+#+end_src
 
 **** Transactions
 
@@ -86,6 +106,11 @@ Approve a Transaction
 client.transactions.apporve(489479, paymentType: 'OVERNIGHT')
 #+end_src
 
+Batch Approves a list of transactions, for the same Vendor. Available payment methods: OVERNIGHT, PREPAID.
+#+begin_src ruby
+client.transactions.batch_approve(batchPaymentType: 'OVERNIGHT', transactionIds: '515168,515169')
+#+end_src
+
 Puting a transaction to =proof=
 #+begin_src ruby
 client.transactions.proof(500744)
@@ -110,7 +135,12 @@ client.transactions.fees(
 + =vendorID=: vendor ID
 + =total=: total amount used to calculate fees for PAYCARGO_CREDIT and CREDITCARD payment type.
 
-**** Funds
+Void Transaction
+#+begin_src ruby
+client.transactions.void(483212)
+#+end_src
+
+**** Payer
 
 Get Funds Availability
 #+begin_src ruby
@@ -120,6 +150,18 @@ client.payer.funds(281783)
 This endpoint retrieves the following data, per payer, per payment method:
 + get funds availability
 + get funds limit
+
+**** Vendor
+
+Get all vendors
+#+begin_src ruby
+client.vendors.list()
+#+end_src
+
+Get vendor by id
+#+begin_src ruby
+client.vendors.retreive(279824)
+#+end_src
 
 **** Reports
 
@@ -157,4 +199,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/lepepe
 
 ** License
 
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+The gem is available as open source under the terms of the [[https://opensource.org/licenses/MIT][MIT License]].
