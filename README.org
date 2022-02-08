@@ -8,7 +8,7 @@
 
 Paycargo is a ruby gem client library to talk with Paycargo API. Paycargo wraps the Paycargos's REST API and follows Ruby convention.
 
-[[https://badge.fury.io/rb/vizion.svg]] https://api.codeclimate.com/v1/badges/47845e928292f554631a/maintainability.svg
+[[https://badge.fury.io/rb/vizion.svg]] [[https://api.codeclimate.com/v1/badges/47845e928292f554631a/maintainability.svg]]
 
 ** Quik start
 
